@@ -1,6 +1,7 @@
 package com.example.mainactivity;
 
 import android.content.Intent;
+//import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -196,7 +197,12 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 // nope 또는 like의 유저 값이 true가 아니면 카드 배열에 추가
                if(snapshot.exists() && !snapshot.child("connection").child("nope").hasChild(currentUId) && !snapshot.child("connection").child("like").hasChild(currentUId)) {
-                   cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString()); //반대 성별의 name을 카드 배열에 추가한다
+                   String profileImageUrl = "dafault";
+
+                   if(snapshot.child("profileImageUrl").getValue().equals("default")){
+                       profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                   }
+                   cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), profileImageUrl); //반대 성별의 name, profileImageUrl을 카드 배열에 추가한다
                    rowItems.add(item);
                    arrayAdapter.notifyDataSetChanged();
                }
@@ -224,4 +230,18 @@ public class MainActivity extends AppCompatActivity {
     finish();
     return;
     }
+    public void goToSettings(View view) {
+        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        startActivity(intent);
+        return;
+    }
+
+    /*
+    public void goToMatches(View view) {
+        Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
+        startActivity(intent);
+        return;
+    }
+    */
+
 }
